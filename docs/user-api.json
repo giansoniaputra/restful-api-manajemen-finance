@@ -1,0 +1,89 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "USER API",
+        "version": "1.0"
+    },
+    "servers": [{ "url": "http://127.0.0.1:8000" }],
+    "paths": {
+        "/api/users/register": {
+            "post": {
+                "description": "Ragister New User",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "examples": {
+                                "giansonia": {
+                                    "description": "Register User Gian Sonia",
+                                    "value": {
+                                        "username": "giansonia",
+                                        "password": "12345",
+                                        "name": "Gian Sonia"
+                                    }
+                                }
+                            },
+                            "schema": {
+                                "type": "object",
+                                "required": ["username", "password", "name"],
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success Register",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "description": "Success Register Users",
+                                        "value": {
+                                            "data": {
+                                                "id": 1,
+                                                "name": "Gian SOnia",
+                                                "username": "giansonia"
+                                            }
+                                        }
+                                    }
+                                },
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "username": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
