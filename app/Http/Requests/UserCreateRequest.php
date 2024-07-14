@@ -26,7 +26,7 @@ class UserCreateRequest extends FormRequest
         return [
             'name' => ['required', 'max:255'],
             'username' => ['required', 'max:255', 'unique:users'],
-            'password' => ['required', 'min:8', 'confirmed']
+            'password' => ['required', 'min:8', 'confirmed'],
             'password_confirmation' => ['required']
         ];
     }
