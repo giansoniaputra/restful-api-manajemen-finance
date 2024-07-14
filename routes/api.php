@@ -23,3 +23,4 @@ Route::post('/users/register', [AuthController::class, 'register']);
 Route::post('/users/login', [AuthController::class, 'login']);
 Route::post('/users/logout', [AuthController::class, 'logout'])->middleware('auth:api');
 Route::get('/users/me', [AuthController::class, 'me'])->middleware('auth:api');
+Route::put('/users/update', [AuthController::class, 'update'])->middleware('auth:api');

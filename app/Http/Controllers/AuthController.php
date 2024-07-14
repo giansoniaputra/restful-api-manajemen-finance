@@ -9,6 +9,7 @@ use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UserCreateRequest;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -38,18 +39,41 @@ class AuthController extends Controller
         $token = Auth::attempt($credentials);
         if (!$token) {
             return response()->json(['error' => 'Unauthorized!'])->setStatusCode(401);
+        } else {
+            $user = User::where('username', $request->username)->first();
+            $user->token = $token;
+            $user->save();
+            return response()->json([
+                "success" => [
+                    "message" => "Login successful!",
+                    "token" => $token
+                ]
+            ])->setStatusCode(200);
         }
+    }
 
-        return response()->json([
-            "success" => [
-                "message" => "Login successful!",
-                "token" => $token
-            ]
-        ])->setStatusCode(200);
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+        $rules = [
+            'password' => 'required|min:8'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()]);
+        } else {
+            User::where('id', $user->id)->update(['password' => $request->password]);
+            return response()->json([
+                'success' => [
+                    'message' => 'Passwords updated successfully!'
+                ]
+            ]);
+        }
     }
 
     public function logout()
     {
+        User::where('username', auth()->user()->username)->update(['token' => null]);
         Auth::logout();
         return response()->json(['message' => 'Successfully logged out']);
     }
